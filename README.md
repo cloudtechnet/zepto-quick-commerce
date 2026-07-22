@@ -6,7 +6,7 @@ Production Ready 3-Tier Quick Commerce Application deployed on Google Kubernetes
 
 Milestone 1
 
-Repository Setup
+Repository Setup  : COMPLETED
 
 ---------------------
 
