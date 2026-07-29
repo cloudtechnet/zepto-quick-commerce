@@ -586,8 +586,3 @@ zepto-quick-commerce/
 └── README.md
 ```
 
-## Next Module
-
-**Part 5: Dockerize the Application**
-
-In the next module, you'll create production-ready Dockerfiles for the React frontend and Node.js backend, build Docker images, run the application with containers, and prepare those images for deployment to Google Kubernetes Engine (GKE) using GitHub Actions.
