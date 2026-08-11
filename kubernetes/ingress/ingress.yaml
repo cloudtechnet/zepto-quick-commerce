@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+
+  name: zepto-ingress
+
+  namespace: zepto
+
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+
+spec:
+
+  rules:
+
+    - http:
+
+        paths:
+
+          - path: /*
+            pathType: ImplementationSpecific
+
+            backend:
+
+              service:
+                name: zepto-frontend
+                port:
+                  number: 80
