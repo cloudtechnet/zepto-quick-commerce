@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zepto-mysql
+  namespace: zepto
+spec:
+  type: ClusterIP
+
+  selector:
+    app: zepto-mysql
+
+  ports:
+    - port: 3306
+      targetPort: 3306

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zepto-frontend
+  namespace: zepto
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: zepto-frontend
+
+  ports:
+    - port: 80
+      targetPort: 80
