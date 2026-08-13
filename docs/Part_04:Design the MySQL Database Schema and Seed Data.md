@@ -585,4 +585,414 @@ zepto-quick-commerce/
 ├── docs/
 └── README.md
 ```
+Below are production-ready SQL files for your **Zepto Quick Commerce** project.
+
+Your **database** folder should look like:
+
+```text
+database/
+│
+├── init.sql
+├── sample-data.sql
+└── README.md
+```
+
+---
+
+# 1. init.sql
+
+```sql
+-- ==========================================
+-- Zepto Quick Commerce Database
+-- File : init.sql
+-- ==========================================
+
+DROP DATABASE IF EXISTS zepto_db;
+
+CREATE DATABASE zepto_db;
+
+USE zepto_db;
+
+-- ==========================================
+-- USERS TABLE
+-- ==========================================
+
+CREATE TABLE users (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    first_name VARCHAR(100) NOT NULL,
+
+    last_name VARCHAR(100),
+
+    email VARCHAR(150) UNIQUE NOT NULL,
+
+    password VARCHAR(255) NOT NULL,
+
+    phone VARCHAR(20),
+
+    role ENUM('CUSTOMER','ADMIN') DEFAULT 'CUSTOMER',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
+
+-- ==========================================
+-- CATEGORIES TABLE
+-- ==========================================
+
+CREATE TABLE categories (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    category_name VARCHAR(100) NOT NULL,
+
+    image_url VARCHAR(255),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
+
+-- ==========================================
+-- PRODUCTS TABLE
+-- ==========================================
+
+CREATE TABLE products (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    category_id INT NOT NULL,
+
+    product_name VARCHAR(200) NOT NULL,
+
+    description TEXT,
+
+    price DECIMAL(10,2) NOT NULL,
+
+    stock INT DEFAULT 0,
+
+    image_url VARCHAR(255),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (category_id)
+        REFERENCES categories(id)
+
+);
+
+-- ==========================================
+-- CART TABLE
+-- ==========================================
+
+CREATE TABLE cart (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    product_id INT NOT NULL,
+
+    quantity INT DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(user_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY(product_id)
+        REFERENCES products(id)
+
+);
+
+-- ==========================================
+-- ORDERS TABLE
+-- ==========================================
+
+CREATE TABLE orders (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    total_amount DECIMAL(10,2),
+
+    order_status ENUM(
+        'PENDING',
+        'CONFIRMED',
+        'PACKED',
+        'SHIPPED',
+        'DELIVERED',
+        'CANCELLED'
+    ) DEFAULT 'PENDING',
+
+    payment_status ENUM(
+        'PENDING',
+        'SUCCESS',
+        'FAILED'
+    ) DEFAULT 'PENDING',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(user_id)
+        REFERENCES users(id)
+
+);
+
+-- ==========================================
+-- ORDER ITEMS TABLE
+-- ==========================================
+
+CREATE TABLE order_items (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    order_id INT NOT NULL,
+
+    product_id INT NOT NULL,
+
+    quantity INT NOT NULL,
+
+    price DECIMAL(10,2),
+
+    FOREIGN KEY(order_id)
+        REFERENCES orders(id),
+
+    FOREIGN KEY(product_id)
+        REFERENCES products(id)
+
+);
+```
+
+---
+
+# 2. sample-data.sql
+
+```sql
+USE zepto_db;
+
+-- ==========================================
+-- USERS
+-- ==========================================
+
+INSERT INTO users
+(first_name,last_name,email,password,phone,role)
+
+VALUES
+
+('Rajesh','Naidu','rajesh@gmail.com','Password123','9876543210','ADMIN'),
+
+('Rahul','Sharma','rahul@gmail.com','Password123','9876543211','CUSTOMER'),
+
+('Priya','Reddy','priya@gmail.com','Password123','9876543212','CUSTOMER'),
+
+('Sneha','Patel','sneha@gmail.com','Password123','9876543213','CUSTOMER');
+
+-- ==========================================
+-- CATEGORIES
+-- ==========================================
+
+INSERT INTO categories
+(category_name,image_url)
+
+VALUES
+
+('Fruits','fruits.jpg'),
+
+('Vegetables','vegetables.jpg'),
+
+('Dairy','dairy.jpg'),
+
+('Beverages','beverages.jpg'),
+
+('Snacks','snacks.jpg');
+
+-- ==========================================
+-- PRODUCTS
+-- ==========================================
+
+INSERT INTO products
+(category_id,product_name,description,price,stock,image_url)
+
+VALUES
+
+(1,'Apple','Fresh Red Apple',120,150,'apple.jpg'),
+
+(1,'Banana','Organic Banana',60,250,'banana.jpg'),
+
+(1,'Orange','Nagpur Orange',90,200,'orange.jpg'),
+
+(2,'Tomato','Fresh Tomato',40,300,'tomato.jpg'),
+
+(2,'Potato','Fresh Potato',35,500,'potato.jpg'),
+
+(2,'Onion','Fresh Onion',45,400,'onion.jpg'),
+
+(3,'Milk','Full Cream Milk',55,150,'milk.jpg'),
+
+(3,'Curd','Fresh Curd',40,120,'curd.jpg'),
+
+(3,'Butter','Amul Butter',58,100,'butter.jpg'),
+
+(4,'Coca Cola','Soft Drink',40,200,'coke.jpg'),
+
+(4,'Pepsi','Cold Drink',40,200,'pepsi.jpg'),
+
+(4,'Sprite','Lemon Drink',42,180,'sprite.jpg'),
+
+(5,'Lays Chips','Magic Masala',20,500,'lays.jpg'),
+
+(5,'Kurkure','Masala Munch',20,450,'kurkure.jpg'),
+
+(5,'Bingo Chips','Original',25,300,'bingo.jpg');
+
+-- ==========================================
+-- CART
+-- ==========================================
+
+INSERT INTO cart
+(user_id,product_id,quantity)
+
+VALUES
+
+(2,1,2),
+
+(2,4,3),
+
+(3,8,1);
+
+-- ==========================================
+-- ORDERS
+-- ==========================================
+
+INSERT INTO orders
+(user_id,total_amount,order_status,payment_status)
+
+VALUES
+
+(2,360,'DELIVERED','SUCCESS'),
+
+(3,135,'CONFIRMED','SUCCESS');
+
+-- ==========================================
+-- ORDER ITEMS
+-- ==========================================
+
+INSERT INTO order_items
+(order_id,product_id,quantity,price)
+
+VALUES
+
+(1,1,2,120),
+
+(1,4,3,40),
+
+(2,8,1,40),
+
+(2,10,2,40),
+
+(2,15,1,25);
+```
+
+---
+
+# 3. Verify the Database
+
+After importing both files, run the following commands:
+
+```sql
+USE zepto_db;
+
+SHOW TABLES;
+```
+
+Expected output:
+
+```text
+users
+
+categories
+
+products
+
+cart
+
+orders
+
+order_items
+```
+
+---
+
+## Verify Categories
+
+```sql
+SELECT * FROM categories;
+```
+
+Expected:
+
+| id | category_name |
+| -- | ------------- |
+| 1  | Fruits        |
+| 2  | Vegetables    |
+| 3  | Dairy         |
+| 4  | Beverages     |
+| 5  | Snacks        |
+
+---
+
+## Verify Products
+
+```sql
+SELECT product_name, price, stock
+FROM products;
+```
+
+Expected:
+
+| Product    | Price | Stock |
+| ---------- | ----: | ----: |
+| Apple      |   120 |   150 |
+| Banana     |    60 |   250 |
+| Orange     |    90 |   200 |
+| Tomato     |    40 |   300 |
+| Potato     |    35 |   500 |
+| Milk       |    55 |   150 |
+| Coca Cola  |    40 |   200 |
+| Lays Chips |    20 |   500 |
+
+---
+
+## Products with Category
+
+```sql
+SELECT
+    p.product_name,
+    c.category_name,
+    p.price
+FROM products p
+JOIN categories c
+ON p.category_id = c.id;
+```
+
+---
+
+## Verify Orders
+
+```sql
+SELECT
+    u.first_name,
+    o.id AS order_id,
+    o.total_amount,
+    o.order_status
+FROM users u
+JOIN orders o
+ON u.id = o.user_id;
+```
+
+---
+
+## Important Note for Production
+
+The sample users above intentionally use plain-text passwords so students can quickly understand the schema and test the APIs. In your **Node.js backend**, **never store plain-text passwords**. Before inserting a user into the database, hash the password using **bcrypt**, and during login compare the entered password with the stored hash using `bcrypt.compare()`. This is the approach you'll implement when building the authentication APIs.
 
