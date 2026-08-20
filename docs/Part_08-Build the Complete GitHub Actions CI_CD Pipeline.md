@@ -328,7 +328,7 @@ gcloud projects describe zepto-ecommerce-class-505916 `
 Example:
 
 ```text
-123456789012
+390473865339
 ```
 
 Save this value.
@@ -440,7 +440,7 @@ gcloud iam workload-identity-pools providers describe github-provider `
 You will get:
 
 ```text
-projects/123456789012/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+projects/390473865339/locations/global/workloadIdentityPools/github-pool/providers/github-provider
 ```
 
 Save this.
@@ -695,7 +695,7 @@ WIF_PROVIDER
 Value:
 
 ```text
-projects/123456789012/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+projects/390473865339/locations/global/workloadIdentityPools/github-pool/providers/github-provider
 ```
 
 And:
