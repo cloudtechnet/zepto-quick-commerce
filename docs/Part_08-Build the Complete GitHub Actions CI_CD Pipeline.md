@@ -114,7 +114,7 @@ From your previous steps, we already know:
 
 ```text
 GCP Project ID:
-zepto-ecommerce-class
+zepto-ecommerce-class-505916
 
 GKE Cluster:
 zepto-gke-cluster
@@ -126,13 +126,13 @@ Artifact Registry:
 zepto-repo
 
 Backend Image:
-asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend:v1.3
+asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-backend:v1.3
 ```
 
 We will use the same Artifact Registry for the frontend:
 
 ```text
-asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-frontend:<tag>
+asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-frontend:<tag>
 ```
 
 ---
@@ -184,7 +184,7 @@ Run:
 
 ```powershell
 gcloud iam service-accounts create github-actions-zepto `
-  --project=zepto-ecommerce-class `
+  --project=zepto-ecommerce-class-505916 `
   --display-name="GitHub Actions Zepto CI/CD"
 ```
 
@@ -192,13 +192,13 @@ Verify:
 
 ```powershell
 gcloud iam service-accounts list `
-  --project=zepto-ecommerce-class
+  --project=zepto-ecommerce-class-505916
 ```
 
 You should see:
 
 ```text
-github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com
+github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com
 ```
 
 We'll call this:
@@ -222,8 +222,8 @@ Artifact Registry Writer
 Run:
 
 ```powershell
-gcloud projects add-iam-policy-binding zepto-ecommerce-class `
-  --member="serviceAccount:github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com" `
+gcloud projects add-iam-policy-binding zepto-ecommerce-class-505916 `
+  --member="serviceAccount:github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com" `
   --role="roles/artifactregistry.writer"
 ```
 
@@ -250,8 +250,8 @@ The workflow also needs to obtain GKE credentials.
 Grant Cluster Viewer:
 
 ```powershell
-gcloud projects add-iam-policy-binding zepto-ecommerce-class `
-  --member="serviceAccount:github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com" `
+gcloud projects add-iam-policy-binding zepto-ecommerce-class-505916 `
+  --member="serviceAccount:github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com" `
   --role="roles/container.clusterViewer"
 ```
 
@@ -277,7 +277,7 @@ Run:
 
 ```powershell
 gcloud iam workload-identity-pools create github-pool `
-  --project=zepto-ecommerce-class `
+  --project=zepto-ecommerce-class-505916 `
   --location=global `
   --display-name="GitHub Actions Pool"
 ```
@@ -286,7 +286,7 @@ Verify:
 
 ```powershell
 gcloud iam workload-identity-pools list `
-  --project=zepto-ecommerce-class `
+  --project=zepto-ecommerce-class-505916 `
   --location=global
 ```
 
@@ -302,7 +302,7 @@ Create provider:
 
 ```powershell
 gcloud iam workload-identity-pools providers create-oidc github-provider `
-  --project=zepto-ecommerce-class `
+  --project=zepto-ecommerce-class-505916 `
   --location=global `
   --workload-identity-pool=github-pool `
   --display-name="GitHub Actions Provider" `
@@ -321,7 +321,7 @@ We need the **project number**, not the project ID, for the WIF provider resourc
 Run:
 
 ```powershell
-gcloud projects describe zepto-ecommerce-class `
+gcloud projects describe zepto-ecommerce-class-505916 `
   --format="value(projectNumber)"
 ```
 
@@ -401,8 +401,8 @@ Grant Workload Identity User:
 
 ```powershell
 gcloud iam service-accounts add-iam-policy-binding `
-  github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com `
-  --project=zepto-ecommerce-class `
+  github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com `
+  --project=zepto-ecommerce-class-505916 `
   --role=roles/iam.workloadIdentityUser `
   --member="principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/YOUR_GITHUB_USERNAME/zepto-quick-commerce"
 ```
@@ -431,7 +431,7 @@ Run:
 
 ```powershell
 gcloud iam workload-identity-pools providers describe github-provider `
-  --project=zepto-ecommerce-class `
+  --project=zepto-ecommerce-class-505916 `
   --location=global `
   --workload-identity-pool=github-pool `
   --format="value(name)"
@@ -461,7 +461,7 @@ You can check:
 
 ```powershell
 gcloud iam service-accounts get-iam-policy `
-  github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com
+  github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com
 ```
 
 Look for:
@@ -663,7 +663,7 @@ Create these **Repository Variables**:
 
 | Variable         | Value                   |
 | ---------------- | ----------------------- |
-| `GCP_PROJECT_ID` | `zepto-ecommerce-class` |
+| `GCP_PROJECT_ID` | `zepto-ecommerce-class-505916` |
 | `GAR_LOCATION`   | `asia-south1`           |
 | `GAR_REPOSITORY` | `zepto-repo`            |
 | `GKE_CLUSTER`    | `zepto-gke-cluster`     |
@@ -707,7 +707,7 @@ WIF_SERVICE_ACCOUNT
 Value:
 
 ```text
-github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com
+github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com
 ```
 
 We are **not** creating:
@@ -1110,7 +1110,7 @@ This is much better for traceability.
 Previously your backend deployment had:
 
 ```yaml
-image: asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend:v1.3
+image: asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-backend:v1.3
 ```
 
 That's fine for manual testing.
@@ -1307,12 +1307,12 @@ So:
 
 ```text
 asia-south1-docker.pkg.dev/
-    zepto-ecommerce-class/
+    zepto-ecommerce-class-505916/
         zepto-repo/
             zepto-frontend:a83f921
 
 asia-south1-docker.pkg.dev/
-    zepto-ecommerce-class/
+    zepto-ecommerce-class-505916/
         zepto-repo/
             zepto-backend:a83f921
 ```
