@@ -65,13 +65,13 @@ gcloud config get-value project
 Expected:
 
 ```text
-zepto-ecommerce-class
+zepto-ecommerce-class-505916
 ```
 
 If not:
 
 ```powershell
-gcloud config set project zepto-ecommerce-class
+gcloud config set project zepto-ecommerce-class-505916-505916
 ```
 
 ---
@@ -328,7 +328,7 @@ List Docker images:
 
 ```powershell
 gcloud artifacts docker images list `
-    asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo
+    asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916-505916/zepto-repo
 ```
 
 You should see repositories/images similar to:
@@ -342,7 +342,7 @@ For the backend:
 
 ```powershell
 gcloud artifacts docker images list `
-    asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend
+    asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916-505916/zepto-repo/zepto-backend
 ```
 
 ---
@@ -360,7 +360,7 @@ kubectl get deployment zepto-backend `
 Expected currently:
 
 ```text
-asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend:v1.3
+asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916-505916/zepto-repo/zepto-backend:v1.3
 ```
 
 Do the same for frontend:
@@ -409,7 +409,7 @@ K8S_NAMESPACE
 Values:
 
 ```text
-GCP_PROJECT_ID = zepto-ecommerce-class
+GCP_PROJECT_ID = zepto-ecommerce-class-505916-505916
 GAR_LOCATION   = asia-south1
 GAR_REPOSITORY = zepto-repo
 GKE_CLUSTER    = zepto-gke-cluster
@@ -431,7 +431,7 @@ WIF_SERVICE_ACCOUNT
 The service account should be:
 
 ```text
-github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com
+github-actions-zepto@zepto-ecommerce-class-505916-505916.iam.gserviceaccount.com
 ```
 
 ---
@@ -442,7 +442,7 @@ Run:
 
 ```powershell
 gcloud iam workload-identity-pools providers describe github-provider `
-    --project=zepto-ecommerce-class `
+    --project=zepto-ecommerce-class-505916-505916 `
     --location=global `
     --workload-identity-pool=github-pool
 ```
@@ -461,7 +461,7 @@ If the provider isn't active, GitHub authentication will fail.
 
 ```powershell
 gcloud iam workload-identity-pools describe github-pool `
-    --project=zepto-ecommerce-class `
+    --project=zepto-ecommerce-class-505916 `
     --location=global
 ```
 
@@ -479,8 +479,8 @@ Run:
 
 ```powershell
 gcloud iam service-accounts get-iam-policy `
-    github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com `
-    --project=zepto-ecommerce-class
+    github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com `
+    --project=zepto-ecommerce-class-505916
 ```
 
 Look for:
@@ -716,7 +716,7 @@ Push Backend Image
 The backend path should be:
 
 ```text
-asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend:a83f921
+asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-backend:a83f921
 ```
 
 ---
@@ -745,7 +745,7 @@ The pipeline executes:
 
 ```bash
 kubectl set image deployment/zepto-backend \
-backend=asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend:<TAG>
+backend=asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-backend:<TAG>
 ```
 
 Kubernetes then starts a rolling update.
@@ -758,7 +758,7 @@ The pipeline executes:
 
 ```bash
 kubectl set image deployment/zepto-frontend \
-frontend=asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-frontend:<TAG>
+frontend=asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-frontend:<TAG>
 ```
 
 ---
@@ -988,7 +988,7 @@ WIF_SERVICE_ACCOUNT
 Expected:
 
 ```text
-github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com
+github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com
 ```
 
 ---
@@ -1003,8 +1003,8 @@ Check the service-account IAM policy:
 
 ```powershell
 gcloud iam service-accounts get-iam-policy `
-    github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com `
-    --project=zepto-ecommerce-class
+    github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com `
+    --project=zepto-ecommerce-class-505916
 ```
 
 You need:
@@ -1047,7 +1047,7 @@ Check:
 
 ```powershell
 gcloud iam workload-identity-pools providers describe github-provider `
-    --project=zepto-ecommerce-class `
+    --project=zepto-ecommerce-class-505916 `
     --location=global `
     --workload-identity-pool=github-pool
 ```
@@ -1071,9 +1071,9 @@ denied: Permission denied
 Check service account role:
 
 ```powershell
-gcloud projects get-iam-policy zepto-ecommerce-class `
+gcloud projects get-iam-policy zepto-ecommerce-class-505916 `
     --flatten="bindings[].members" `
-    --filter="bindings.members:github-actions-zepto@zepto-ecommerce-class.iam.gserviceaccount.com"
+    --filter="bindings.members:github-actions-zepto@zepto-ecommerce-class-505916.iam.gserviceaccount.com"
 ```
 
 The service account needs:
@@ -1088,7 +1088,7 @@ roles/artifactregistry.writer
 
 ```powershell
 gcloud artifacts repositories list `
-    --project=zepto-ecommerce-class `
+    --project=zepto-ecommerce-class-505916 `
     --location=asia-south1
 ```
 
@@ -1105,7 +1105,7 @@ zepto-repo
 Correct:
 
 ```text
-asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo/zepto-backend:TAG
+asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo/zepto-backend:TAG
 ```
 
 Breakdown:
@@ -1115,7 +1115,7 @@ asia-south1-docker.pkg.dev
         |
         +-- GCP project
         |      |
-        |      +-- zepto-ecommerce-class
+        |      +-- zepto-ecommerce-class-505916
         |
         +-- repository
         |      |
@@ -1261,7 +1261,7 @@ Node cannot access registry
 
 ```powershell
 gcloud artifacts docker images list `
-    asia-south1-docker.pkg.dev/zepto-ecommerce-class/zepto-repo
+    asia-south1-docker.pkg.dev/zepto-ecommerce-class-505916/zepto-repo
 ```
 
 If the GitHub Actions image is:
