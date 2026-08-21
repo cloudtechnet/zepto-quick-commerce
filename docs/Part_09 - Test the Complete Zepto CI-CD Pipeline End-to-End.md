@@ -1,4 +1,4 @@
-# Part 9 — Test the Complete Zepto CI/CD Pipeline End-to-End
+# Part 9 - Test the Complete Zepto CI/CD Pipeline End-to-End
 
 Now we will validate the complete flow:
 
