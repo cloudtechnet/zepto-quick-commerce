@@ -223,6 +223,14 @@ jobs:
           echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       # ----------------------------------------
+      # Ensure Manifests Applied (create if missing)
+      # ----------------------------------------
+
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl apply -f k8s/ -n ${{ env.K8S_NAMESPACE }}
+
+      # ----------------------------------------
       # Update Backend Image
       # ----------------------------------------
 
