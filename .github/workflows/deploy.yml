@@ -263,6 +263,19 @@ jobs:
             --timeout=180s
 
       # ----------------------------------------
+      # Debug Rollout (auto-diagnose on failure)
+      # ----------------------------------------
+
+      - name: Debug Backend Pods
+        if: always()
+        run: |
+          kubectl get pods -n ${{ env.K8S_NAMESPACE }} -l app=zepto-backend
+          echo "---- DESCRIBE ----"
+          kubectl describe pods -n ${{ env.K8S_NAMESPACE }} -l app=zepto-backend
+          echo "---- LOGS ----"
+          kubectl logs -n ${{ env.K8S_NAMESPACE }} -l app=zepto-backend --all-containers --tail=100 || true
+
+      # ----------------------------------------
       # Wait for Frontend Rollout
       # ----------------------------------------
 
