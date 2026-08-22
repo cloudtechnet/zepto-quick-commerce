@@ -307,10 +307,12 @@ jobs:
         if: always()
         run: |
           POD=$(kubectl get pods -n ${{ env.K8S_NAMESPACE }} -l app=zepto-frontend -o jsonpath='{.items[0].metadata.name}')
-          echo "---- CURL / ----"
-          kubectl exec -n ${{ env.K8S_NAMESPACE }} $POD -- curl -sv http://localhost:80/ || true
+          echo "---- EVENTS FOR $POD ----"
+          kubectl get events -n ${{ env.K8S_NAMESPACE }} --field-selector involvedObject.name=$POD --sort-by='.lastTimestamp'
           echo "---- NGINX CONFIG ----"
           kubectl exec -n ${{ env.K8S_NAMESPACE }} $POD -- cat /etc/nginx/conf.d/default.conf || true
+          echo "---- CURL / (best effort) ----"
+          kubectl exec -n ${{ env.K8S_NAMESPACE }} $POD -- curl -sv --max-time 3 http://localhost:80/ || true
 
       # ----------------------------------------
       # Verify Pods
