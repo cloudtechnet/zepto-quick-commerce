@@ -300,6 +300,19 @@ jobs:
           kubectl logs -n ${{ env.K8S_NAMESPACE }} -l app=zepto-frontend --all-containers --tail=100 || true
 
       # ----------------------------------------
+      # Debug Frontend Probe (curl + nginx config)
+      # ----------------------------------------
+
+      - name: Debug Frontend Probe
+        if: always()
+        run: |
+          POD=$(kubectl get pods -n ${{ env.K8S_NAMESPACE }} -l app=zepto-frontend -o jsonpath='{.items[0].metadata.name}')
+          echo "---- CURL / ----"
+          kubectl exec -n ${{ env.K8S_NAMESPACE }} $POD -- curl -sv http://localhost:80/ || true
+          echo "---- NGINX CONFIG ----"
+          kubectl exec -n ${{ env.K8S_NAMESPACE }} $POD -- cat /etc/nginx/conf.d/default.conf || true
+
+      # ----------------------------------------
       # Verify Pods
       # ----------------------------------------
 
