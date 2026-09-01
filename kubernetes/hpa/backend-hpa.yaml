@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: zepto-backend
 
-  minReplicas: 2
+  minReplicas: 4
   maxReplicas: 10
 
   behavior:
